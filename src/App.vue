@@ -13,5 +13,8 @@
 </script>
 
 <style>
-	/*每个页面公共css */
+	/*图标样式*/
+    @import "./styles/iconfont.wxss";
+    /*初始化样式*/
+    @import "./styles/base.wxss";
 </style>
