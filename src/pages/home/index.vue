@@ -6,7 +6,7 @@
                     <uni-segmented-control
                         :values = "items.map(v=>v.title)"
                         :current = "current"
-                        @click = "onClickItem"
+                        @clickItem = "onClickItem"
                         style-type = "text"
                         active-color = "#d4237a"
                     ></uni-segmented-control>
@@ -14,16 +14,16 @@
                 <view class = "iconfont iconsearch"></view>
             </view>
             <view class = "home_tab_content">
-                <view v-show = "current===0">
+                <view v-if = "current===0">
                     <home-recommend></home-recommend>
                 </view>
-                <view v-show = "current===0">
+                <view v-if = "current===1">
                     <home-category></home-category>
                 </view>
-                <view v-show = "current===0">
+                <view v-if = "current===2">
                     <home-new></home-new>
                 </view>
-                <view v-show = "current===0">
+                <view v-if = "current===3">
                     <home-album></home-album>
                 </view>
             </view>
