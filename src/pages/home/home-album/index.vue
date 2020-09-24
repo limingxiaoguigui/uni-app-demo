@@ -1,5 +1,5 @@
 <template>
-    <view>
+    <scroll-view class="album_scroll_view" scroll-y @scrolltolower="handleToLower">
         <!--swiper标签用于轮播图
         1.自动轮播 autoplay
         2.指示器 indicator-dots
@@ -19,11 +19,13 @@
         <!--轮播结束-->
         <!--列表开始-->
         <view class = "album_list">
-            <view class = "album_item" v-for = "item in album" :key = "item.id">
+            <navigator class = "album_item" v-for = "item in album" :key = "item.id"
+                       :url = "`/pages/album/index?id=${item.id}`">
 
                 <view class = "album_img">
-                    <image
-                        :src = "item.cover"></image>
+                    <!--等比例拉升并填充满box-->
+                    <image model = "aspectFill"
+                           :src = "item.cover"></image>
                 </view>
                 <view class="album_info">
                     <view class="album_name">{{item.name}}</view>
@@ -34,10 +36,10 @@
                         </view>
                     </view>
                 </view>
-            </view>
+            </navigator>
         </view>
         <!--列表结束-->
-    </view>
+    </scroll-view>
 
 </template>
 
@@ -55,6 +57,8 @@
         banner: [],
         //列表数组
         album: [],
+        //是否有分页数据
+        hasMore:true,
       };
     },
     mounted() {
@@ -70,10 +74,32 @@
           url: 'http://157.122.54.189:9088/image/v1/wallpaper/album',
           data: this.params,
         }).then(result => {
-          this.banner = result.res.banner;
-          this.album = result.res.album;
+          if(this.banner.length===0) {
+            this.banner = result.res.banner;
+          }
+          if(result.res.album.length===0){
+            this.hasMore = false;
+            uni.showToast({
+              title: '没有更多数据了',
+              icon: 'none',
+            });
+            return;
+          }
+          this.album = [...this.album,...result.res.album];
         });
       },
+      //上拉加载更多
+      handleToLower: function() {
+        if (this.hasMore) {
+          this.params.skip += this.params.limit;
+          this.getList();
+        } else {
+          uni.showToast({
+            title: '没有数据了',
+            icon: 'none',
+          });
+        }
+      }
     },
   };
 </script>

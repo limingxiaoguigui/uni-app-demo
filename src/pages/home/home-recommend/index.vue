@@ -3,12 +3,13 @@
     <scroll-view @scrolltolower="handleToLower" class="recommend_view" scroll-y v-if="recommends.length>0" >
         <!-- 首页推荐开始-->
         <view class = "recommend_wrap">
-            <view class = "recommend_item"
+            <navigator class = "recommend_item"
                   v-for = "item in recommends" :key = "item.id"
+                       :url ="`/pages/album/index?id=${item.target}`"
             >
                 <!--图片自适应-->
                 <image mode = "widthFix" :src = "item.thumb"></image>
-            </view>
+            </navigator>
         </view>
         <!-- 首页推荐结束-->
         <!--月份开始-->
@@ -89,6 +90,10 @@
           //是否还有下一页
           if (result.res.vertical.length === 0) {
             this.hasMore = false;
+            uni.showToast({
+              title: '没有更多数据了',
+              icon: 'none',
+            });
             return;
           }
           if (this.recommends.length === 0) {
