@@ -25,8 +25,10 @@
         <!--作者结束-->
         <!--列表开始-->
         <view class = "album_list">
-            <view class = "album_item" v-for = "item in wallpaper" :key = "item.id">
-                <image mode = "widthFix" :src = "item.thumb+item.rule.replace('$<Height>',360)"></image>
+            <view class = "album_item" v-for = "(item,index) in wallpaper" :key = "item.id">
+                <go-detail :list="wallpaper" :index="index">
+                    <image mode = "widthFix" :src = "item.thumb+item.rule.replace('$<Height>',360)"></image>
+                </go-detail>
             </view>
         </view>
         <!--列表结束-->
@@ -34,7 +36,12 @@
 </template>
 
 <script>
+  import goDetail from '@/components/goDetail';
+
   export default {
+    components: {
+      goDetail,
+    },
     name: 'index',
     data() {
       return {
